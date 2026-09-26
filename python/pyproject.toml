@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "prspace"
+version = "0.1.0"
+description = "Probability spaces with the same syntax in Python and R: Pr[X == 0] = 0.25"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Ivan Gutierrez", email = "gutierrezi0222@gmail.com" }]
+requires-python = ">=3.10"
+keywords = ["probability", "statistics", "education"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
+
+[project.urls]
+Homepage = "https://github.com/ivanharvard/prspace"
+Issues = "https://github.com/ivanharvard/prspace/issues"
+
+[dependency-groups]
+dev = ["pytest>=8"]

@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Check versions match the tag
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          py=$(grep -m1 '^version' python/pyproject.toml | cut -d'"' -f2)
+          init=$(grep -m1 '__version__' python/src/prspace/__init__.py | cut -d'"' -f2)
+          r=$(grep -m1 '^Version:' r/DESCRIPTION | awk '{print $2}')
+          echo "tag=$tag pyproject=$py __init__=$init DESCRIPTION=$r"
+          [ "$tag" = "$py" ] && [ "$tag" = "$init" ] && [ "$tag" = "$r" ]
+      - run: uv run pytest -q
+        working-directory: python
+      - run: uv build
+        working-directory: python
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: python/dist/
+
+  pypi:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write  # PyPI trusted publishing, no API token needed
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
+
+  github-release:
+    needs: pypi
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - run: gh release create "$GITHUB_REF_NAME" dist/* --repo "$GITHUB_REPOSITORY" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
