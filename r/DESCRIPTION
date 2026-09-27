@@ -1,11 +1,14 @@
 Package: prspace
 Title: Probability Spaces with the Same Syntax in R and Python
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: person("Ivan", "Gutierrez", email = "gutierrezi0222@gmail.com", role = c("aut", "cre"))
 Description: Write probability statements such as 'Pr[X == 0] <- 0.25' and
-    read them back with 'Pr[X == 0]'. Complements are derived automatically,
-    so 'Pr[X != 0]' is 0.75. A companion Python package on PyPI offers the
-    same syntax.
+    read them back with 'Pr[X == 0]'. Events can declare their support
+    (real, integer, count, or a finite set), and anything the rules of
+    probability then pin down, such as complements and totals, is derived.
+    Assignments that contradict earlier ones are flagged with the range of
+    values that would have been consistent. A companion Python package on
+    PyPI offers the same syntax.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Depends: R (>= 4.1.0)

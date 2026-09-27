@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "prspace"
-version = "0.1.0"
+version = "0.2.0"
 description = "Probability spaces with the same syntax in Python and R: Pr[X == 0] = 0.25"
 readme = "README.md"
 license = "MIT"
